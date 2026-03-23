@@ -19,3 +19,18 @@ spring:
 
   rabbitmq:
     addresses: ${RABBITMQ_URL}
+  # GRPC
+  grpc:
+    server:
+      port:9090
+
+management:
+  otlp:
+    metrics:
+      export:
+        enabled: false # Aqui deberia ir la URL del collector
+        #url: ${OTEL_COLLECTOR_URL}
+
+logging:
+  pattern:
+    console: "%d{HH:mm:ss} %-5level %logger{20} - %msg%n"

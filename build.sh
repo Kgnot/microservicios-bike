@@ -7,4 +7,4 @@ do
 done
 
 echo "Building Docker images..."
-docker compose build
+# docker compose build

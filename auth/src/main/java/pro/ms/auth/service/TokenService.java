@@ -40,7 +40,7 @@ public class TokenService {
     private String buildToken(String subject, String role, long expiration, String type) {
         return Jwts.builder()
                 .subject(subject)
-                .claim("role", role)
+                .claim("idRol", role)
                 .claim("type", type)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expiration))
@@ -64,7 +64,7 @@ public class TokenService {
     }
 
     public String getRole(String token) {
-        return parse(token).get("role", String.class);
+        return parse(token).get("idRol", String.class);
     }
 
     public String getType(String token) {
@@ -86,7 +86,7 @@ public class TokenService {
         }
 
         String subject = claims.getSubject();
-        String role = claims.get("role", String.class);
+        String role = claims.get("idRol", String.class);
 
         return generate(subject, role);
     }

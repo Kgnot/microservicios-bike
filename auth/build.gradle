@@ -42,6 +42,8 @@ dependencies {
 	implementation 'io.grpc:grpc-services'
 	implementation 'org.springframework.grpc:spring-grpc-client-spring-boot-starter'
 	compileOnly 'org.projectlombok:lombok'
+	// validacion
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 //	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'

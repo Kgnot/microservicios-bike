@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package usuario;
+
+option java_package = "pro.ms.auth.grpc.usuario.usuario";
+option java_multiple_files = true;
+
+service UsuarioService {
+    rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
+}
+
+message CreateUserRequest {
+    string email = 1;
+    string password = 2;
+    string role = 3;
+    string nombre = 4;
+    string nickname = 5;
+    string telefono = 6;
+    string fecha_nacimiento = 7;
+}
+
+message CreateUserResponse {
+    string userId = 1;
+}

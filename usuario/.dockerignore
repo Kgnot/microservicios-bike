@@ -1,7 +1,6 @@
 .git
 .gitignore
 node_modules
-build/
 .gradle/
 *.log
 .env

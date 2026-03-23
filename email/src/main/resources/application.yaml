@@ -1,3 +1,37 @@
 spring:
   application:
     name: email
+    
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?currentSchema=${DB_SCHEMA}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: ${DB_SCHEMA}
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+
+  rabbitmq:
+    addresses: ${RABBITMQ_URL}
+
+    mail:
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT}
+    username: ${SMTP_USER}
+    password: ${SMTP_PASS}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+email:
+  from: ${SMTP_FROM}

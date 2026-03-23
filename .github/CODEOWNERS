@@ -1,0 +1,32 @@
+# GitHub CODEOWNERS for HELIO-PRACTICA-PENAGOS
+# Este archivo especifica qué usuarios son los propietarios de diferentes partes del código
+# y deben revisar los pull requests relacionados.
+
+# Propietario de todo el repositorio
+* @Kgnot
+
+# Microservicios
+/auth/ @Kgnot
+/usuario/ @Kgnot
+/estacion/ @Kgnot
+/bicicleta/ @Kgnot
+/reserva/ @Kgnot
+/servicio/ @Kgnot
+/billetera/ @Kgnot
+/suscripcion/ @Kgnot
+/email/ @Kgnot
+/informe/ @Kgnot
+
+# Configuración e infraestructura
+/docker-compose.yml @Kgnot
+/docker-compose.p1.yml @Kgnot
+/nginx.conf @Kgnot
+/.env @Kgnot
+/build.sh @Kgnot
+/script-DB.sql @Kgnot
+
+# Configuración de GitHub
+/.github/ @Kgnot
+
+# Documentación
+/README.md @Kgnot

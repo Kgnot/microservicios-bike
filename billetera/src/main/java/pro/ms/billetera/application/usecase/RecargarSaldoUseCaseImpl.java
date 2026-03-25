@@ -28,25 +28,27 @@ public class RecargarSaldoUseCaseImpl implements RecargarSaldoUseCase {
 
     @Override
     public Result<Transaccion, RecargarSaldoError> ejecutar(RecargarCommand cmd) {
+
         Cuenta cuenta = cuentaRepository.findById(cmd.cuentaId());
-        Moneda moneda = monedaRepository.findById(cmd.monedaId());
-        EntidadPago ePago = entidadPagoRepository.findById(cmd.entidadPago());
         // validamos la cuenta
         if (cuenta == null) {
             log.warn("No existe el cuenta con el id: {}", cmd.cuentaId());
             return new Result.Failure<>(new RecargarSaldoError
                     .CuentaNoEncontrada("cuenta invalida"));
         }
-        // validamos la entidad de pago
-        if (ePago == null) {
-            log.warn("No existe la entidad de pago con el id: {}", cmd.entidadPago());
-            return new Result.Failure<>(new RecargarSaldoError.EntidadPagoNoEncontrada("tipo invalido"));
-        }
+        Moneda moneda = monedaRepository.findById(cmd.monedaId());
         //validamos la moneda
         if (moneda == null) {
             log.warn("No existe el moneda con el id: {}", cmd.monedaId());
             return new Result.Failure<>(new RecargarSaldoError.MonedaNoEncontrada("tipo invalido"));
         }
+        EntidadPago ePago = entidadPagoRepository.findById(cmd.entidadPago());
+        // validamos la entidad de pago
+        if (ePago == null) {
+            log.warn("No existe la entidad de pago con el id: {}", cmd.entidadPago());
+            return new Result.Failure<>(new RecargarSaldoError.EntidadPagoNoEncontrada("tipo invalido"));
+        }
+
 
         if (!cuenta.getMoneda().equals(moneda)) {
             return new Result.Failure<>(new RecargarSaldoError.MonedaInvalida(moneda.getDescripcion()));
@@ -54,6 +56,8 @@ public class RecargarSaldoUseCaseImpl implements RecargarSaldoUseCase {
         var acreditar = cuenta.acreditar(cmd.monto());
         //acreditamos y verificamos que no haya error
         if (acreditar.isFailure()) {
+            log.warn("Error al acreditar en cuenta [cuentaId={}, error={}]",
+                    cmd.cuentaId(), acreditar.getError());
             return new Result.Failure<>(new RecargarSaldoError
                     .ErrorDominioCuenta(acreditar.getError()));
         }
@@ -72,7 +76,8 @@ public class RecargarSaldoUseCaseImpl implements RecargarSaldoUseCase {
         // Creamos la transaccion saldo
         cuentaRepository.save(cuenta);
         var savedTx = transaccionRepository.save(tx);
-
+        log.info("Recarga exitosa [cuentaId={}, monto={}, transaccionId={}]",
+                cmd.cuentaId(), cmd.monto(), savedTx.getId());
         return new Result.Success<>(savedTx);
     }
 }

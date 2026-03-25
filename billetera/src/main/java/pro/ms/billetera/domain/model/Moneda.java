@@ -1,4 +1,4 @@
-package pro.ms.billetera.domain;
+package pro.ms.billetera.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

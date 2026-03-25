@@ -1,5 +1,6 @@
 package pro.ms.billetera.infrastructure.controller;
 
+import bike.common.api.ApiResponse;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,11 +24,11 @@ public class TransaccionController {
     }
 
     @PostMapping("/recargar")
-    public ResponseEntity<?> recargarSaldo(@RequestBody RecargarRequest request) {
+    public ResponseEntity<ApiResponse<?>> recargarSaldo(@RequestBody RecargarRequest request) {
         var recargaSaldoCommand = TransaccionRequestMapper.toRecargarCommand(request);
         recargarSaldoUseCase.ejecutar(recargaSaldoCommand);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(ApiResponse.success("Recarga realizada con éxito"));
     }
 
 }

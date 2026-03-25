@@ -26,7 +26,7 @@ ext {
 
 dependencies {
 	// propia del proyecto
-	implementation 'com.github.Kgnot:ms-commons-bike-errors:1.0.2'
+	implementation 'com.github.Kgnot:ms-commons-bike-errors:1.0.3'
 	//
 	implementation 'org.springframework.boot:spring-boot-h2console'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'

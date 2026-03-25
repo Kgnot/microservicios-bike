@@ -19,6 +19,7 @@ import java.util.UUID;
 public class CuentaEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     private UUID usuarioId;
@@ -39,7 +40,7 @@ public class CuentaEntity {
 
     // relaciones
 
-    @OneToMany(mappedBy = "cuenta", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cuenta")
     @JsonManagedReference
     private List<TransaccionEntity> transacciones = new ArrayList<>();
 

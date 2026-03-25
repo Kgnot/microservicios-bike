@@ -1,7 +1,7 @@
 package pro.ms.billetera.infrastructure.persistence.adapter;
 
 import org.springframework.stereotype.Repository;
-import pro.ms.billetera.application.port.out.CuentaRepository;
+import pro.ms.billetera.application.port.out.repository.CuentaRepository;
 import pro.ms.billetera.domain.model.Cuenta;
 import pro.ms.billetera.infrastructure.persistence.jpa.CuentaEntity;
 import pro.ms.billetera.infrastructure.persistence.spring.SpringJpaCuentaEntityRepository;

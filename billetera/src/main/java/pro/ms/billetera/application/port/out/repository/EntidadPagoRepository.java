@@ -1,4 +1,4 @@
-package pro.ms.billetera.application.port.out;
+package pro.ms.billetera.application.port.out.repository;
 
 import pro.ms.billetera.domain.model.EntidadPago;
 

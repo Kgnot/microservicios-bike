@@ -3,9 +3,14 @@ package pro.ms.billetera.application.usecase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import pro.ms.billetera.application.dto.command_usecase.RecargarCommand;
+import pro.ms.billetera.application.event.RecargaRealizadaEvent;
 import pro.ms.billetera.application.exception.*;
-import pro.ms.billetera.application.port.in.RecargarSaldoUseCase;
-import pro.ms.billetera.application.port.out.*;
+import pro.ms.billetera.application.port.in.transaccion.RecargarSaldoUseCase;
+import pro.ms.billetera.application.port.out.event.EventPublisher;
+import pro.ms.billetera.application.port.out.repository.CuentaRepository;
+import pro.ms.billetera.application.port.out.repository.EntidadPagoRepository;
+import pro.ms.billetera.application.port.out.repository.MonedaRepository;
+import pro.ms.billetera.application.port.out.repository.TransaccionRecargaRepository;
 import pro.ms.billetera.domain.model.Cuenta;
 import pro.ms.billetera.domain.model.EntidadPago;
 import pro.ms.billetera.domain.model.Moneda;
@@ -17,10 +22,10 @@ import pro.ms.billetera.domain.model.detalle_transaccion.DetalleRecarga;
 public class RecargarSaldoUseCaseImpl implements RecargarSaldoUseCase {
 
     private final CuentaRepository cuentaRepository;
-    private final TransaccionRepository transaccionRepository;
     private final TransaccionRecargaRepository transaccionRecargaRepository;
     private final MonedaRepository monedaRepository;
     private final EntidadPagoRepository entidadPagoRepository;
+    private final EventPublisher eventPublisher;
 
 
     @Override
@@ -69,10 +74,10 @@ public class RecargarSaldoUseCaseImpl implements RecargarSaldoUseCase {
                 detalle);
 
         log.info("Se va a guardar los siguientes datos:\n {} ,\n {}", cuenta, tx);
-        cuentaRepository.save(cuenta);
-        transaccionRepository.save(tx);
         Transaccion recargaSaved = transaccionRecargaRepository.save(tx);
-
+        cuentaRepository.save(cuenta);
+        // se genera la publicación del evento de recarga realizada
+        eventPublisher.publish(RecargaRealizadaEvent.from(recargaSaved));
         log.info("Recarga exitosa [cuentaId={}, monto={}, transacciónId={}]",
                 cmd.cuentaId(), cmd.monto(), recargaSaved.getId());
 

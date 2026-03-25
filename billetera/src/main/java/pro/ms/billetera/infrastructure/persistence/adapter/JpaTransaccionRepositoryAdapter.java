@@ -2,7 +2,7 @@ package pro.ms.billetera.infrastructure.persistence.adapter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import pro.ms.billetera.application.port.out.TransaccionRepository;
+import pro.ms.billetera.application.port.out.repository.TransaccionRepository;
 import pro.ms.billetera.domain.model.Transaccion;
 import pro.ms.billetera.infrastructure.persistence.jpa.TransaccionEntity;
 import pro.ms.billetera.infrastructure.persistence.spring.SpringJpaTransaccionEntityRepository;

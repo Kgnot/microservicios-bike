@@ -1,7 +1,7 @@
 package pro.ms.billetera.infrastructure.persistence.adapter;
 
 import org.springframework.stereotype.Repository;
-import pro.ms.billetera.application.port.out.EntidadPagoRepository;
+import pro.ms.billetera.application.port.out.repository.EntidadPagoRepository;
 import pro.ms.billetera.domain.model.EntidadPago;
 import pro.ms.billetera.infrastructure.persistence.jpa.EntidadPagoEntity;
 import pro.ms.billetera.infrastructure.persistence.spring.SpringJpaEntidadPagoEntityRepository;

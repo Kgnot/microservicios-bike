@@ -1,11 +1,9 @@
 package pro.ms.billetera.infrastructure.persistence.adapter;
 
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import pro.ms.billetera.application.port.out.TransaccionRecargaRepository;
+import pro.ms.billetera.application.port.out.repository.TransaccionRecargaRepository;
 import pro.ms.billetera.domain.model.Transaccion;
-import pro.ms.billetera.infrastructure.persistence.jpa.TransaccionEntity;
 import pro.ms.billetera.infrastructure.persistence.jpa.TransaccionRecargaEntity;
 import pro.ms.billetera.infrastructure.persistence.spring.SpringJpaTransaccionRecargaEntityRepository;
 import pro.ms.billetera.utils.mapper.TransaccionRecargaMapper;

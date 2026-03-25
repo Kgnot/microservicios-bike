@@ -53,7 +53,7 @@ public class Transaccion {
             DetalleRecarga detalle
     ) {
         return new Transaccion(
-                UUID.randomUUID(),
+                null,
                 cuentaId,
                 monto,
                 moneda,
@@ -72,7 +72,7 @@ public class Transaccion {
             String descripcion
     ) {
         return new Transaccion(
-                UUID.randomUUID(),
+                null,
                 cuentaId,
                 monto,
                 moneda,

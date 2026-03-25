@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pro.ms.billetera.application.dto.command_usecase.RecargarCommand;
-import pro.ms.billetera.application.port.in.RecargarSaldoUseCase;
+import pro.ms.billetera.application.port.in.transaccion.RecargarSaldoUseCase;
 import pro.ms.billetera.domain.model.Transaccion;
 
 @Service

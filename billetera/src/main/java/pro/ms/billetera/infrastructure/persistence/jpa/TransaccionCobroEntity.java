@@ -11,6 +11,7 @@ import java.util.UUID;
 public class TransaccionCobroEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @OneToOne
     @JoinColumn(name = "transaccion_id")

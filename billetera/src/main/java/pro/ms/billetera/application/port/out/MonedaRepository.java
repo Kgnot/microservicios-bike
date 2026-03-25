@@ -6,6 +6,6 @@ import java.util.Optional;
 
 public interface MonedaRepository {
 
-    Optional<Moneda> findById(Short id);
+    Optional<Moneda> findById(String id);
 
 }

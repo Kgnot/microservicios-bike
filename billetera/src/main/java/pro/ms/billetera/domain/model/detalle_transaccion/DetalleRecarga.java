@@ -1,9 +1,13 @@
 package pro.ms.billetera.domain.model.detalle_transaccion;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import pro.ms.billetera.domain.model.EntidadPago;
 
 @Getter
+@ToString
+@EqualsAndHashCode
 public class DetalleRecarga implements DetalleTransaccion {
 
     private final EntidadPago entidad;

@@ -5,6 +5,7 @@ import pro.ms.billetera.application.port.out.CuentaRepository;
 import pro.ms.billetera.domain.model.Cuenta;
 import pro.ms.billetera.infrastructure.persistence.jpa.CuentaEntity;
 import pro.ms.billetera.infrastructure.persistence.spring.SpringJpaCuentaEntityRepository;
+import pro.ms.billetera.utils.mapper.CuentaMapper;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -21,11 +22,12 @@ public class JpaCuentaRepositoryAdapter implements CuentaRepository {
     @Override
     public Optional<Cuenta> findById(UUID id) {
         Optional<CuentaEntity> entity = repository.findById(id);
-        return Optional.empty();
+        return entity.map(CuentaMapper::toDomain);
     }
 
     @Override
     public Cuenta save(Cuenta cuenta) {
-        return null;
+        return CuentaMapper.toDomain(repository
+                .save(CuentaMapper.toEntity(cuenta)));
     }
 }

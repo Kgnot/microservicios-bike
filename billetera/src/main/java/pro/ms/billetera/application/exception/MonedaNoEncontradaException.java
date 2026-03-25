@@ -6,7 +6,7 @@ import pro.ms.billetera.utils.context.BilleteraContext;
 
 public class MonedaNoEncontradaException extends AppException {
 
-    public MonedaNoEncontradaException(Short monedaId) {
+    public MonedaNoEncontradaException(String monedaId) {
         super(CommonErrorCode.MONEDA_NO_ENCONTRADA,
                 BilleteraContext.PREFIX,
                 BilleteraContext.MS_NAME,

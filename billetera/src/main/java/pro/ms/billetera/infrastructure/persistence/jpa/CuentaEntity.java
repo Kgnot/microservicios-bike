@@ -23,7 +23,7 @@ public class CuentaEntity {
 
     private UUID usuarioId;
 
-    private BigDecimal monto;
+    private BigDecimal saldo;
 
     @ManyToOne
     @JsonBackReference
@@ -35,7 +35,7 @@ public class CuentaEntity {
 
     @CreationTimestamp
     @Column(updatable = false)
-    private LocalDateTime ultimaCreacion;
+    private LocalDateTime creadoEn;
 
     // relaciones
 

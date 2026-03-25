@@ -32,10 +32,10 @@ public class RecargarSaldoUseCaseImpl implements RecargarSaldoUseCase {
                     return new CuentaNoEncontradaException(cmd.cuentaId() + "");
                 });
 
-        Moneda moneda = monedaRepository.findById(cmd.monedaId())
+        Moneda moneda = monedaRepository.findById(cmd.moneda())
                 .orElseThrow(() -> {
-                    log.warn("No existe la moneda con id: {}", cmd.monedaId());
-                    return new MonedaNoEncontradaException(cmd.monedaId());
+                    log.warn("No existe la moneda con id: {}", cmd.moneda());
+                    return new MonedaNoEncontradaException(cmd.moneda());
                 });
 
         EntidadPago ePago = entidadPagoRepository.findById(cmd.entidadPago())
@@ -59,6 +59,7 @@ public class RecargarSaldoUseCaseImpl implements RecargarSaldoUseCase {
                 ePago,
                 cmd.numeroCuenta()
         );
+        log.info("Detalle : \n {}", detalle);
 
         Transaccion tx = Transaccion.recarga(
                 cuenta.getId(),
@@ -67,9 +68,10 @@ public class RecargarSaldoUseCaseImpl implements RecargarSaldoUseCase {
                 cmd.descripcion(),
                 detalle);
 
+        log.info("Se va a guardar los siguientes datos:\n {} ,\n {}", cuenta, tx);
         cuentaRepository.save(cuenta);
-        Transaccion savedTx = transaccionRepository.save(tx);
-        Transaccion recargaSaved = transaccionRecargaRepository.save(savedTx);
+        transaccionRepository.save(tx);
+        Transaccion recargaSaved = transaccionRecargaRepository.save(tx);
 
         log.info("Recarga exitosa [cuentaId={}, monto={}, transacciónId={}]",
                 cmd.cuentaId(), cmd.monto(), recargaSaved.getId());

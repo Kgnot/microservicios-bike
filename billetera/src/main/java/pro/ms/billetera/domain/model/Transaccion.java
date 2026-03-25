@@ -1,5 +1,7 @@
 package pro.ms.billetera.domain.model;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import pro.ms.billetera.domain.model.detalle_transaccion.DetalleRecarga;
 import pro.ms.billetera.domain.model.detalle_transaccion.DetalleTransaccion;
 import pro.ms.billetera.domain.enums.TipoTransaccion;
@@ -9,6 +11,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
+@ToString
+@EqualsAndHashCode
 public class Transaccion {
 
     private final UUID id;
@@ -76,6 +80,29 @@ public class Transaccion {
                 LocalDateTime.now(),
                 TipoTransaccion.COBRO,
                 null
+        );
+    }
+
+    // Reconstituye una transacción existente desde la capa de persistencia.
+    public static Transaccion rehydrate(
+            UUID id,
+            UUID cuentaId,
+            BigDecimal monto,
+            Moneda moneda,
+            String descripcion,
+            LocalDateTime fecha,
+            TipoTransaccion tipo,
+            DetalleTransaccion detalle
+    ) {
+        return new Transaccion(
+                id,
+                cuentaId,
+                monto,
+                moneda,
+                descripcion,
+                fecha,
+                tipo,
+                detalle
         );
     }
 }

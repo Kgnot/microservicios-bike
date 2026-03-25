@@ -22,7 +22,7 @@ public class TransaccionRecargaEntity {
     @ManyToOne
     @JoinColumn(name = "entidad_id")
     @JsonBackReference
-    private EntidadPagoEntity entidadPagoEntity;
+    private EntidadPagoEntity entidadPago;
 
     @Column(name = "numero_cuenta", nullable = false, length = 30)
     private String numeroCuenta;

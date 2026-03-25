@@ -3,10 +3,11 @@ package pro.ms.billetera.application.port.out;
 import pro.ms.billetera.domain.model.Transaccion;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public interface TransaccionRepository {
 
-    Optional<Transaccion> findById(Short id);
+    Optional<Transaccion> findById(UUID id);
 
     Transaccion save(Transaccion transaccion);
 

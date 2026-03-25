@@ -2,9 +2,11 @@ package pro.ms.billetera.application.port.out;
 
 import pro.ms.billetera.domain.model.EntidadPago;
 
+import java.util.Optional;
+
 public interface EntidadPagoRepository {
 
-    EntidadPago findById(Short id);
+    Optional<EntidadPago> findById(Short id);
 
 }
 

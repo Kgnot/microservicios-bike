@@ -3,18 +3,14 @@ package pro.ms.billetera.application.usecase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import pro.ms.billetera.application.dto.command_usecase.RecargarCommand;
-import pro.ms.billetera.application.error.RecargarSaldoError;
+import pro.ms.billetera.application.exception.*;
 import pro.ms.billetera.application.port.in.RecargarSaldoUseCase;
-import pro.ms.billetera.application.port.out.CuentaRepository;
-import pro.ms.billetera.application.port.out.EntidadPagoRepository;
-import pro.ms.billetera.application.port.out.MonedaRepository;
-import pro.ms.billetera.application.port.out.TransaccionRepository;
+import pro.ms.billetera.application.port.out.*;
 import pro.ms.billetera.domain.model.Cuenta;
 import pro.ms.billetera.domain.model.EntidadPago;
 import pro.ms.billetera.domain.model.Moneda;
 import pro.ms.billetera.domain.model.Transaccion;
 import pro.ms.billetera.domain.model.detalle_transaccion.DetalleRecarga;
-import pro.ms.billetera.utils.shared.Result;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,62 +18,62 @@ public class RecargarSaldoUseCaseImpl implements RecargarSaldoUseCase {
 
     private final CuentaRepository cuentaRepository;
     private final TransaccionRepository transaccionRepository;
+    private final TransaccionRecargaRepository transaccionRecargaRepository;
     private final MonedaRepository monedaRepository;
     private final EntidadPagoRepository entidadPagoRepository;
 
 
     @Override
-    public Result<Transaccion, RecargarSaldoError> ejecutar(RecargarCommand cmd) {
+    public Transaccion ejecutar(RecargarCommand cmd) {
 
-        Cuenta cuenta = cuentaRepository.findById(cmd.cuentaId());
-        // validamos la cuenta
-        if (cuenta == null) {
-            log.warn("No existe el cuenta con el id: {}", cmd.cuentaId());
-            return new Result.Failure<>(new RecargarSaldoError
-                    .CuentaNoEncontrada("cuenta invalida"));
-        }
-        Moneda moneda = monedaRepository.findById(cmd.monedaId());
-        //validamos la moneda
-        if (moneda == null) {
-            log.warn("No existe el moneda con el id: {}", cmd.monedaId());
-            return new Result.Failure<>(new RecargarSaldoError.MonedaNoEncontrada("tipo invalido"));
-        }
-        EntidadPago ePago = entidadPagoRepository.findById(cmd.entidadPago());
-        // validamos la entidad de pago
-        if (ePago == null) {
-            log.warn("No existe la entidad de pago con el id: {}", cmd.entidadPago());
-            return new Result.Failure<>(new RecargarSaldoError.EntidadPagoNoEncontrada("tipo invalido"));
-        }
+        Cuenta cuenta = cuentaRepository.findById(cmd.cuentaId())
+                .orElseThrow(() -> {
+                    log.warn("No existe la cuenta con id: {}", cmd.cuentaId());
+                    return new CuentaNoEncontradaException(cmd.cuentaId() + "");
+                });
 
+        Moneda moneda = monedaRepository.findById(cmd.monedaId())
+                .orElseThrow(() -> {
+                    log.warn("No existe la moneda con id: {}", cmd.monedaId());
+                    return new MonedaNoEncontradaException(cmd.monedaId());
+                });
+
+        EntidadPago ePago = entidadPagoRepository.findById(cmd.entidadPago())
+                .orElseThrow(() -> {
+                    log.warn("No existe la entidad de pago con id: {}", cmd.entidadPago());
+                    return new EntidadPagoNoEncontradaException(cmd.entidadPago());
+                });
 
         if (!cuenta.getMoneda().equals(moneda)) {
-            return new Result.Failure<>(new RecargarSaldoError.MonedaInvalida(moneda.getDescripcion()));
+            throw new MonedaInvalidaException(moneda.getDescripcion());
         }
         var acreditar = cuenta.acreditar(cmd.monto());
         //acreditamos y verificamos que no haya error
         if (acreditar.isFailure()) {
             log.warn("Error al acreditar en cuenta [cuentaId={}, error={}]",
                     cmd.cuentaId(), acreditar.getError());
-            return new Result.Failure<>(new RecargarSaldoError
-                    .ErrorDominioCuenta(acreditar.getError()));
+            throw new SaldoInsuficienteException(acreditar.getError().getMessage());
         }
-        // creamos el detalle
+
         DetalleRecarga detalle = new DetalleRecarga(
                 ePago,
                 cmd.numeroCuenta()
         );
-        //creamos la transaccion
+
         Transaccion tx = Transaccion.recarga(
                 cuenta.getId(),
                 cmd.monto(),
                 moneda,
                 cmd.descripcion(),
                 detalle);
-        // Creamos la transaccion saldo
+
         cuentaRepository.save(cuenta);
-        var savedTx = transaccionRepository.save(tx);
-        log.info("Recarga exitosa [cuentaId={}, monto={}, transaccionId={}]",
-                cmd.cuentaId(), cmd.monto(), savedTx.getId());
-        return new Result.Success<>(savedTx);
+        Transaccion savedTx = transaccionRepository.save(tx);
+        Transaccion recargaSaved = transaccionRecargaRepository.save(savedTx);
+
+        log.info("Recarga exitosa [cuentaId={}, monto={}, transacciónId={}]",
+                cmd.cuentaId(), cmd.monto(), recargaSaved.getId());
+
+        return recargaSaved;
     }
 }

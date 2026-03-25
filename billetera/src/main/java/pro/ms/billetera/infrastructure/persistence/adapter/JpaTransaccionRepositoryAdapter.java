@@ -4,11 +4,13 @@ import org.springframework.stereotype.Repository;
 import pro.ms.billetera.application.port.out.TransaccionRepository;
 import pro.ms.billetera.domain.model.Transaccion;
 
+import java.util.Optional;
+
 @Repository
-public class JpaTransaccionRepository implements TransaccionRepository {
+public class JpaTransaccionRepositoryAdapter implements TransaccionRepository {
     @Override
-    public Transaccion findById(Short id) {
-        return null;
+    public Optional<Transaccion> findById(Short id) {
+        return Optional.empty();
     }
 
     @Override

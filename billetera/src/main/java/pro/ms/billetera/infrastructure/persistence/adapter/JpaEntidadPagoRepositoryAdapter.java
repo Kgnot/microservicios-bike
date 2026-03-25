@@ -4,10 +4,12 @@ import org.springframework.stereotype.Repository;
 import pro.ms.billetera.application.port.out.EntidadPagoRepository;
 import pro.ms.billetera.domain.model.EntidadPago;
 
+import java.util.Optional;
+
 @Repository
-public class JpaEntidadPagoRepository implements EntidadPagoRepository {
+public class JpaEntidadPagoRepositoryAdapter implements EntidadPagoRepository {
     @Override
-    public EntidadPago findById(Short id) {
-        return null;
+    public Optional<EntidadPago> findById(Short id) {
+        return Optional.empty();
     }
 }

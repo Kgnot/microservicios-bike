@@ -20,15 +20,14 @@ configurations {
 	}
 }
 
-repositories {
-	mavenCentral()
-}
-
 ext {
 	set('springGrpcVersion', "1.0.2")
 }
 
 dependencies {
+	// propia del proyecto
+	implementation 'com.github.Kgnot:ms-commons-bike-errors:1.0.2'
+	//
 	implementation 'org.springframework.boot:spring-boot-h2console'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-amqp'
@@ -77,6 +76,7 @@ protobuf {
 		}
 	}
 }
+
 
 tasks.named('test') {
 	useJUnitPlatform()

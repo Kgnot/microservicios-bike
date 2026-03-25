@@ -4,10 +4,13 @@ import org.springframework.stereotype.Repository;
 import pro.ms.billetera.application.port.out.MonedaRepository;
 import pro.ms.billetera.domain.model.Moneda;
 
+import java.util.Optional;
+
 @Repository
-public class JpaMonedaRepository implements MonedaRepository {
+public class JpaMonedaRepositoryAdapter implements MonedaRepository {
     @Override
-    public Moneda findById(Short id) {
-        return null;
+    public Optional<Moneda> findById(Short id) {
+        return Optional.empty();
     }
+
 }

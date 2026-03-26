@@ -9,7 +9,8 @@ public class MontoInvalidoException extends AppException {
         super(
                 BilleteraErrorCode.MONTO_INVALIDO,
                 BilleteraContext.PREFIX,
-                BilleteraContext.MS_NAME
+                BilleteraContext.MS_NAME,
+                message
         );
     }
 }

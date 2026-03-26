@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pro.ms.billetera.application.port.in.transaccion.CobrarTransaccionExternoUseCase;
+import pro.ms.billetera.application.port.in.transaccion.CobrarTransaccionServicioUseCase;
 import pro.ms.billetera.application.port.in.transaccion.RecargarSaldoUseCase;
 import pro.ms.billetera.application.port.out.event.EventPublisher;
 import pro.ms.billetera.application.port.out.repository.*;
 import pro.ms.billetera.application.usecase.CobrarTransaccionExternoUseCaseImpl;
+import pro.ms.billetera.application.usecase.CobrarTransaccionServicioUseCaseImpl;
 import pro.ms.billetera.application.usecase.RecargarSaldoUseCaseImpl;
 
 @Configuration
@@ -43,6 +45,22 @@ public class UseCaseConfig {
                 cuentaRepository,
                 monedaRepository,
                 cobroRepository,
+                eventPublisher
+        );
+    }
+
+    @Bean
+    @Qualifier("cobrarTransaccionServicioApplication")
+    public CobrarTransaccionServicioUseCase cobrarTransaccionServicioUseCase(
+            CuentaRepository cuentaRepository,
+            TransaccionServicioRepository servicioCobroRepository,
+            MonedaRepository monedaRepository,
+            EventPublisher eventPublisher
+    ) {
+        return new CobrarTransaccionServicioUseCaseImpl(
+                cuentaRepository,
+                monedaRepository,
+                servicioCobroRepository,
                 eventPublisher
         );
     }

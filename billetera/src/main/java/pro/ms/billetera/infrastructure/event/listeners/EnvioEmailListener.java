@@ -7,10 +7,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 import pro.ms.billetera.application.event.CobroRealizadoEvent;
+import pro.ms.billetera.application.event.CobroServicioRealizadoEvent;
 import pro.ms.billetera.application.event.RecargaRealizadaEvent;
+import pro.ms.billetera.domain.model.detalle_transaccion.DetalleCobro;
 import pro.ms.billetera.domain.model.detalle_transaccion.DetalleRecarga;
+import pro.ms.billetera.domain.model.detalle_transaccion.DetalleServicio;
 import pro.ms.billetera.infrastructure.config.event.RabbitTransaccionCobroConfig;
 import pro.ms.billetera.infrastructure.config.event.RabbitTransaccionRecargaConfig;
+import pro.ms.billetera.infrastructure.config.event.RabbitTransaccionServiceConfig;
+import pro.ms.billetera.infrastructure.event.message.CobroRealizadoMessage;
+import pro.ms.billetera.infrastructure.event.message.CobroRealizadoServiceMessage;
 import pro.ms.billetera.infrastructure.event.message.RecargaRealizadaMessage;
 
 import java.time.Instant;
@@ -45,21 +51,40 @@ public class EnvioEmailListener {
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleCobroRealizado(CobroRealizadoEvent event) {
-        var detalle = (DetalleRecarga) event.getTransaccion().getDetalle();
-        RecargaRealizadaMessage message = new RecargaRealizadaMessage(
+        var detalle = (DetalleCobro) event.getTransaccion().getDetalle();
+        CobroRealizadoMessage message = new CobroRealizadoMessage(
                 event.getTransaccion().getId(),
                 event.getTransaccion().getMonto(),
                 event.getTransaccion().getMoneda().getId(),
                 event.getTransaccion().getCuentaId(),
                 event.getTransaccion().getDescripcion(),
-                detalle.entidad().getNombre(),
-                detalle.numeroCuenta(),
+                detalle.razon(),
                 Instant.now()
         );
         log.info("Enviando email por cobro: {}", event.getTransaccion().getId());
         rabbitTemplate.convertAndSend(
                 RabbitTransaccionCobroConfig.EXCHANGE,
                 RabbitTransaccionCobroConfig.TRANSACCION_COBRO_EXCHANGE,
+                message
+        );
+    }
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    public void handleCobroServicio(CobroServicioRealizadoEvent event) {
+        var detalle = (DetalleServicio) event.getTransaccion().getDetalle();
+        CobroRealizadoServiceMessage message = new CobroRealizadoServiceMessage(
+                event.getTransaccion().getId(),
+                event.getTransaccion().getMonto(),
+                event.getTransaccion().getMoneda().getId(),
+                event.getTransaccion().getCuentaId(),
+                event.getTransaccion().getDescripcion(),
+                detalle.servicioId(),
+                Instant.now()
+        );
+        log.info("Enviando email por servicio: {}", event.getTransaccion().getId());
+        rabbitTemplate.convertAndSend(
+                RabbitTransaccionServiceConfig.EXCHANGE,
+                RabbitTransaccionServiceConfig.TRANSACCION_SERVICIO_EXCHANGE,
                 message
         );
     }

@@ -1,9 +1,8 @@
 package pro.ms.billetera.utils.mapper;
 
 import pro.ms.billetera.domain.model.Transaccion;
+import pro.ms.billetera.domain.model.detalle_transaccion.DetalleServicio;
 import pro.ms.billetera.infrastructure.persistence.jpa.TransaccionServicioEntity;
-
-import java.util.UUID;
 
 public final class TransaccionServicioMapper {
 
@@ -14,15 +13,16 @@ public final class TransaccionServicioMapper {
         throw new UnsupportedOperationException("No existe TipoTransaccion.SERVICIO en dominio para mapear esta entidad");
     }
 
-    public static TransaccionServicioEntity toEntity(Transaccion domain, UUID servicioId) {
+    public static TransaccionServicioEntity toEntity(Transaccion domain) {
         if (domain == null) {
             return null;
         }
-
+        DetalleServicio dt = (DetalleServicio) domain.getDetalle();
+        // todo revisar el detalle no sea nullo los atributos
         TransaccionServicioEntity entity = new TransaccionServicioEntity();
         entity.setId(domain.getId());
         entity.setTransaccion(TransaccionMapper.toEntity(domain));
-        entity.setServicioId(servicioId);
+        entity.setServicioId(dt.servicioId());
         return entity;
     }
 }

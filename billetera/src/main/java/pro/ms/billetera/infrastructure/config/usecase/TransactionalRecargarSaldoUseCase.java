@@ -14,8 +14,11 @@ public class TransactionalRecargarSaldoUseCase implements RecargarSaldoUseCase {
 
     private final RecargarSaldoUseCase recargarSaldoUseCase;
 
-    public TransactionalRecargarSaldoUseCase(RecargarSaldoUseCase recargarSaldoUseCase) {
-        this.recargarSaldoUseCase = recargarSaldoUseCase;
+    public TransactionalRecargarSaldoUseCase(
+            @Qualifier("recargarSaldoApplication") RecargarSaldoUseCase recargarSaldoUseCase) {
+        {
+            this.recargarSaldoUseCase = recargarSaldoUseCase;
+        }
     }
 
     @Override

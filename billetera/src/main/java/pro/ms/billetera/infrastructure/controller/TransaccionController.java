@@ -7,8 +7,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pro.ms.billetera.application.port.in.transaccion.CobrarTransaccionExternoUseCase;
 import pro.ms.billetera.application.port.in.transaccion.RecargarSaldoUseCase;
 import pro.ms.billetera.infrastructure.controller.request.RecargarRequest;
+import pro.ms.billetera.infrastructure.controller.request.TransaccionCobroRequest;
+import pro.ms.billetera.utils.mapper.controller.TransaccionCobroRequestMapper;
 import pro.ms.billetera.utils.mapper.controller.TransaccionRequestMapper;
 
 @RestController
@@ -16,11 +19,14 @@ import pro.ms.billetera.utils.mapper.controller.TransaccionRequestMapper;
 public class TransaccionController {
 
     private final RecargarSaldoUseCase recargarSaldoUseCase;
+    private final CobrarTransaccionExternoUseCase cobrarUseCase;
 
 
     public TransaccionController(
-            @Qualifier("transactionalRecargarSaldoUseCase") RecargarSaldoUseCase recargarSaldoUseCase) {
+            @Qualifier("transactionalRecargarSaldoUseCase") RecargarSaldoUseCase recargarSaldoUseCase,
+            @Qualifier("transactionalCobrarExternoSaldoUseCase") CobrarTransaccionExternoUseCase cobrarUseCase) {
         this.recargarSaldoUseCase = recargarSaldoUseCase;
+        this.cobrarUseCase = cobrarUseCase;
     }
 
     @PostMapping("/recargar")
@@ -30,5 +36,14 @@ public class TransaccionController {
 
         return ResponseEntity.ok(ApiResponse.success("Recarga realizada con éxito"));
     }
+
+    @PostMapping("/cobrar")
+    public ResponseEntity<ApiResponse<?>> cobrarSaldo(@RequestBody TransaccionCobroRequest request) {
+        var cobroCommand = TransaccionCobroRequestMapper.toTransaccionCobroCommand(request);
+        cobrarUseCase.ejecutar(cobroCommand);
+
+        return ResponseEntity.ok(ApiResponse.success("Recarga realizada con éxito"));
+    }
+
 
 }

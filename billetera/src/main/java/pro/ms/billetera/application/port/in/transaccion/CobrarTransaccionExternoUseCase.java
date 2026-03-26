@@ -5,5 +5,5 @@ import pro.ms.billetera.domain.model.Transaccion;
 
 public interface CobrarTransaccionExternoUseCase {
 
-    Transaccion execute(TransaccionCobroCommand cmd);
+    Transaccion ejecutar(TransaccionCobroCommand cmd);
 }

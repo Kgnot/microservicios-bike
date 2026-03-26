@@ -1,4 +1,5 @@
 package pro.ms.billetera.domain.model;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -69,7 +70,8 @@ public class Transaccion {
             UUID cuentaId,
             BigDecimal monto,
             Moneda moneda,
-            String descripcion
+            String descripcion,
+            DetalleTransaccion detalle
     ) {
         return new Transaccion(
                 null,
@@ -79,7 +81,7 @@ public class Transaccion {
                 descripcion,
                 LocalDateTime.now(),
                 TipoTransaccion.COBRO,
-                null
+                detalle
         );
     }
 

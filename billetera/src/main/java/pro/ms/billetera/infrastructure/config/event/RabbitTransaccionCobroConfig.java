@@ -9,35 +9,32 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class RabbitTransaccionRecargaConfig {
+public class RabbitTransaccionCobroConfig {
 
     public static final String EXCHANGE = "bil.events";
-    public static final String TRANSACCION_RECARGA_QUEUE = "email.transaccion.recarga";
-    public static final String TRANSACCION_RECARGA_EXCHANGE = "transaccion.recarga";
+    public static final String TRANSACCION_COBRO_QUEUE = "email.transaccion.cobro";
+    public static final String TRANSACCION_COBRO_EXCHANGE = "transaccion.cobro";
 
     @Bean
-    @Qualifier("recarga")
-    TopicExchange billRecargaExchange() {
+    @Qualifier("cobro")
+    TopicExchange billCobroExchange() {
         return new TopicExchange(EXCHANGE, true, false);
     }
 
     @Bean
-    @Qualifier("recarga")
-    Queue transaccionRecargaQueue() {
-        return new Queue(TRANSACCION_RECARGA_QUEUE, true);
+    @Qualifier("cobro")
+    Queue transaccionCobroQueue() {
+        return new Queue(TRANSACCION_COBRO_QUEUE, true);
     }
 
     @Bean
-    Binding transaccionRecargaBinding(
-            @Qualifier("recarga")
+    Binding transaccionCobroBinding(
+            @Qualifier("cobro")
             Queue transaccionRecargaQueue,
-            @Qualifier("recarga")
+            @Qualifier("cobro")
             TopicExchange transaccionRecargaExchange) {
         return BindingBuilder.bind(transaccionRecargaQueue)
                 .to(transaccionRecargaExchange)
-                .with(TRANSACCION_RECARGA_EXCHANGE);
+                .with(TRANSACCION_COBRO_EXCHANGE);
     }
 }
-
-
-

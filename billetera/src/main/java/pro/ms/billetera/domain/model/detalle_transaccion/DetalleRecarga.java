@@ -1,19 +1,10 @@
 package pro.ms.billetera.domain.model.detalle_transaccion;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
 import pro.ms.billetera.domain.model.EntidadPago;
 
-@Getter
-@ToString
-@EqualsAndHashCode
-public class DetalleRecarga implements DetalleTransaccion {
+public record DetalleRecarga(EntidadPago entidad, String numeroCuenta) implements DetalleTransaccion {
 
-    private final EntidadPago entidad;
-    private final String numeroCuenta;
-
-    public DetalleRecarga(EntidadPago entidad, String numeroCuenta) {
+    public DetalleRecarga {
         if (entidad == null) {
             throw new IllegalArgumentException("Entidad requerida");
         }
@@ -21,7 +12,5 @@ public class DetalleRecarga implements DetalleTransaccion {
             throw new IllegalArgumentException("Número de cuenta requerido");
         }
 
-        this.entidad = entidad;
-        this.numeroCuenta = numeroCuenta;
     }
 }

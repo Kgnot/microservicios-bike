@@ -5,12 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import pro.ms.billetera.application.exception.CuentaNoEncontradaException;
-import pro.ms.billetera.application.exception.EntidadPagoNoEncontradaException;
-import pro.ms.billetera.application.exception.MonedaInvalidaException;
-import pro.ms.billetera.application.exception.MonedaNoEncontradaException;
-import pro.ms.billetera.application.exception.SaldoInsuficienteException;
-import pro.ms.billetera.application.exception.ServicioNoEncontrado;
+import pro.ms.billetera.application.exception.*;
 
 import java.time.OffsetDateTime;
 
@@ -34,6 +29,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(SaldoInsuficienteException.class)
     public ResponseEntity<ApiError> handleConflict(SaldoInsuficienteException ex, HttpServletRequest request) {
+        return buildResponse(HttpStatus.CONFLICT, ex.getMessage(), request);
+    }
+    @ExceptionHandler(MontoInvalidoException.class)
+    public ResponseEntity<ApiError> handleMontoInvalido(MontoInvalidoException ex, HttpServletRequest request) {
         return buildResponse(HttpStatus.CONFLICT, ex.getMessage(), request);
     }
 

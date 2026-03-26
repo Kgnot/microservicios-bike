@@ -7,6 +7,9 @@ import pro.ms.billetera.infrastructure.controller.request.RecargarRequest;
 import pro.ms.billetera.infrastructure.controller.request.TransaccionCobroRequest;
 import pro.ms.billetera.infrastructure.controller.request.TransaccionServicioRequest;
 
+import java.math.BigDecimal;
+import java.util.UUID;
+
 public final class TransaccionRequestMapper {
 
     private TransaccionRequestMapper() {
@@ -32,7 +35,12 @@ public final class TransaccionRequestMapper {
             return null;
         }
 
-        return new TransaccionCobroCommand();
+        return new TransaccionCobroCommand(
+                request.cuentaId(),
+                request.monto(),
+                request.moneda(), // moneda_id solo que estoy pendejo
+                request.razon()
+        );
     }
 
     public static TransaccionServicioCommand toTransaccionServicioCommand(TransaccionServicioRequest request) {

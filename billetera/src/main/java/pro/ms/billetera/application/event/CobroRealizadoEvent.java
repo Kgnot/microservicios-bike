@@ -9,17 +9,15 @@ import java.util.UUID;
 
 @Getter
 @RequiredArgsConstructor(access = lombok.AccessLevel.PRIVATE)
-public class RecargaRealizadaEvent {
+public class CobroRealizadoEvent {
 
     private final UUID eventId = UUID.randomUUID();
     private final LocalDateTime fecha = LocalDateTime.now();
     private final Transaccion transaccion;
 
-    public static RecargaRealizadaEvent from(Transaccion transaccion) {
-        return new RecargaRealizadaEvent(
+    public static CobroRealizadoEvent from(Transaccion transaccion) {
+        return new CobroRealizadoEvent(
                 transaccion
         );
     }
-
-
 }

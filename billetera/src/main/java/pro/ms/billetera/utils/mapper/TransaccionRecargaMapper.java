@@ -34,8 +34,8 @@ public final class TransaccionRecargaMapper {
         TransaccionRecargaEntity entity = new TransaccionRecargaEntity();
 //        entity.setId(domain.getId());
         entity.setTransaccion(TransaccionMapper.toEntity(domain));
-        entity.setEntidadPago(EntidadPagoMapper.toEntity(detalleRecarga.getEntidad()));
-        entity.setNumeroCuenta(detalleRecarga.getNumeroCuenta());
+        entity.setEntidadPago(EntidadPagoMapper.toEntity(detalleRecarga.entidad()));
+        entity.setNumeroCuenta(detalleRecarga.numeroCuenta());
         return entity;
     }
 }

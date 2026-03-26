@@ -1,5 +1,13 @@
 package pro.ms.billetera.infrastructure.controller.request;
 
-public record TransaccionCobroRequest() {
+import java.math.BigDecimal;
+import java.util.UUID;
+
+public record TransaccionCobroRequest(
+        UUID cuentaId,
+        BigDecimal monto,
+        String moneda, // moneda_id solo que estoy pendejo
+        String razon
+) {
 }
 

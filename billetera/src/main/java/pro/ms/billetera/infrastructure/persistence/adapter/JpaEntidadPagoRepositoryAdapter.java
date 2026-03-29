@@ -7,6 +7,7 @@ import pro.ms.billetera.infrastructure.persistence.jpa.EntidadPagoEntity;
 import pro.ms.billetera.infrastructure.persistence.spring.SpringJpaEntidadPagoEntityRepository;
 import pro.ms.billetera.utils.mapper.EntidadPagoMapper;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -19,8 +20,23 @@ public class JpaEntidadPagoRepositoryAdapter implements EntidadPagoRepository {
     }
 
     @Override
+    public EntidadPago save(EntidadPago entidadPago) {
+        EntidadPagoEntity toSave = EntidadPagoMapper.toEntity(entidadPago);
+        EntidadPagoEntity saved = repository.save(toSave);
+        return EntidadPagoMapper.toDomain(saved);
+    }
+
+    @Override
     public Optional<EntidadPago> findById(Short id) {
         Optional<EntidadPagoEntity> find = repository.findById(id);
         return find.map(EntidadPagoMapper::toDomain);
+    }
+
+    @Override
+    public List<EntidadPago> findAll() {
+
+        return repository.findAll().stream()
+                .map(EntidadPagoMapper::toDomain)
+                .toList();
     }
 }

@@ -2,6 +2,10 @@ spring:
   application:
     name: billetera
 
+  devtools:
+    restart:
+      enabled: false
+
   datasource:
     url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?currentSchema=${DB_SCHEMA}
     username: ${DB_USER}
@@ -19,3 +23,18 @@ spring:
 
   rabbitmq:
     addresses: ${RABBITMQ_URL}
+# management:
+management:
+  otlp:
+    metrics:
+      export:
+        enabled: false # Aqui deberia ir la URL del collector
+        #url: ${OTEL_COLLECTOR_URL}
+
+# JWT: configuration
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION}
+  refresh:
+    expiration: ${JWT_REFRESH_EXPIRATION}
+

@@ -6,6 +6,7 @@ import pro.ms.billetera.domain.model.Moneda;
 import pro.ms.billetera.infrastructure.persistence.spring.SpringJpaMonedaEntityRepository;
 import pro.ms.billetera.utils.mapper.MonedaMapper;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -21,6 +22,19 @@ public class JpaMonedaRepositoryAdapter implements MonedaRepository {
     public Optional<Moneda> findById(String id) {
         return repository.findById(id)
                 .map(MonedaMapper::toDomain);
+    }
+
+    @Override
+    public List<Moneda> findAll() {
+        return repository.findAll()
+                .stream()
+                .map(MonedaMapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public Moneda save(Moneda moneda) {
+        return MonedaMapper.toDomain(repository.save(MonedaMapper.toEntity(moneda)));
     }
 
 }
